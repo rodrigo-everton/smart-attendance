@@ -13,7 +13,6 @@ Desenvolvedor de Software/Analista de Testes: Átila Alves Rodrigues
 
 Desenvolvedor Líder: Alex Hirth Bastos
 
- ### Desenvolvedor de Software/Analista de Testes: Átila Alves Rodrigues
-
-nde será realizado e acompanhado o projeto?
+ ### Onde será realizado e acompanhado o projeto?
 O desenvolvimento do projeto será realizado em um ambiente de desenvolvimento integrado (IDE), utilizando ferramentas de programação e colaboração online para a gestão do código. O acompanhamento do progresso será feito por meio de reuniões de equipe regulares e do uso de plataformas de comunicação para garantir que todos os membros estejam alinhados. O sistema será implementado em salas de aula piloto para testes e validação, e a sua gestão será acompanhada através de um painel administrativo que permitirá visualizar o status e os resultados em tempo real.
+
