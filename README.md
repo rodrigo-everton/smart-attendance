@@ -9,6 +9,8 @@ O Smart Attendance é importante porque traz diversos benefícios para a comunid
 ### Quem são os responsáveis e seus papéis?
 Gerente de Projeto: Rodrigo Everton
 
+Desenvolvedor de Software/Analista de Testes: Átila Alves Rodrigues
+
 Desenvolvedor Líder: Alex Hirth Bastos
 
  ### Desenvolvedor de Software/Analista de Testes: Átila Alves Rodrigues
