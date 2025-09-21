@@ -1,18 +1,37 @@
-# smart-attendance
+# Smart Attendance
+## 📌 O que a equipe está desenvolvendo?
 
-### O que a equipe está desenvolvendo?
-A equipe está desenvolvendo o Smart Attendance, um sistema automatizado para o controle de presença de estudantes. Este projeto visa substituir o método manual de chamada, que geralmente é demorado e propenso a erros. A solução utiliza reconhecimento facial para identificar os alunos ao entrarem na sala de aula, registrando sua presença de forma automática e precisa.
+- O Smart Attendance é um sistema automatizado para o controle de presença de estudantes. Seu objetivo é substituir o processo manual de chamada — geralmente demorado e sujeito a falhas — por uma solução rápida, confiável e moderna. O sistema utiliza tecnologias de reconhecimento facial para identificar os alunos assim que entram na sala de aula, registrando a presença de forma automática e precisa.
 
-### Por que este projeto é importante?
-O Smart Attendance é importante porque traz diversos benefícios para a comunidade escolar. Ele otimiza o tempo de professores e alunos, permitindo que as aulas comecem mais rapidamente. A automação também aumenta a precisão dos registros de presença, eliminando a possibilidade de erros humanos. Além disso, o sistema oferece dados e relatórios em tempo real, facilitando o acompanhamento da frequência escolar e a identificação de alunos com alta taxa de ausência, o que pode ser um alerta para possíveis problemas de desempenho.
+## 🎯 Por que este projeto é importante?
 
-### Quem são os responsáveis e seus papéis?
-Gerente de Projeto: Rodrigo Everton
+- O Smart Attendance traz benefícios diretos para a comunidade acadêmica:
 
-Desenvolvedor de Software/Analista de Testes: Átila Alves Rodrigues
+⏱️ Agilidade: permite que as aulas comecem mais rápido, economizando tempo precioso.
 
-Desenvolvedor Líder: Alex Hirth Bastos
+✅ Confiabilidade: elimina inconsistências e reduz a possibilidade de fraudes.
 
- ### Onde será realizado e acompanhado o projeto?
-O desenvolvimento do projeto será realizado em um ambiente de desenvolvimento integrado (IDE), utilizando ferramentas de programação e colaboração online para a gestão do código. O acompanhamento do progresso será feito por meio de reuniões de equipe regulares e do uso de plataformas de comunicação para garantir que todos os membros estejam alinhados. O sistema será implementado em salas de aula piloto para testes e validação, e a sua gestão será acompanhada através de um painel administrativo que permitirá visualizar o status e os resultados em tempo real.
+📊 Gestão inteligente: disponibiliza relatórios em tempo real para acompanhamento da frequência.
 
+🚨 Indicadores de risco: facilita a identificação de estudantes com alta taxa de ausência, servindo como alerta para problemas de desempenho.
+
+## 👥 Quem são os responsáveis e seus papéis?
+
+Gerente de Projeto: João Vitor Leonardi Nascimento 
+
+Desenvolvedor de Software / Analista de Testes: Alex Hirth Bastos e Rodrigo Everton
+
+Desenvolvedor Líder: Átila Alves Rodrigues
+
+## 🛠️ Onde será realizado e acompanhado o projeto?
+
+O desenvolvimento será conduzido em um ambiente integrado de desenvolvimento (IDE), utilizando ferramentas de programação e colaboração online para a gestão do código.
+
+## O progresso será acompanhado por:
+
+📅 Reuniões de equipe regulares
+
+💬 Plataformas de comunicação para alinhamento contínuo
+
+- A implementação ocorrerá inicialmente em salas de aula piloto, garantindo testes e validação da solução.
+- Além disso, a gestão será realizada por meio de um painel administrativo, permitindo visualizar o status e os resultados em tempo real.
