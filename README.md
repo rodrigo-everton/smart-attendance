@@ -1,7 +1,7 @@
 # Smart Attendance
 ## 📌 O que a equipe está desenvolvendo?
 
-- O Smart Attendance é um sistema automatizado para o controle de presença de estudantes. Seu objetivo é substituir o processo manual de chamada — geralmente demorado e sujeito a falhas — por uma solução rápida, confiável e moderna. O sistema utiliza tecnologias de reconhecimento facial para identificar os alunos assim que entram na sala de aula, registrando a presença de forma automática e precisa.
+- O Smart Attendance é um sistema automatizado para o controle de presença de estudantes. Seu objetivo é substituir o processo manual de chamada, geralmente demorado e sujeito a falhas por uma solução rápida, confiável e moderna. O sistema utiliza tecnologias de reconhecimento facial para identificar os alunos assim que entram na sala de aula, registrando a presença de forma automática e precisa.
 
 ## 🎯 Por que este projeto é importante?
 
