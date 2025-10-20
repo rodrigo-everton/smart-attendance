@@ -1,5 +1,8 @@
 # 🧠 Smart Attendance
 
+## Gerenciamento de Projetos
+[Trello](https://trello.com/b/6VhRTvD9/projeto-integrador-ii-smart-attendance)
+
 ## 📌 Sobre o Projeto
 O **Smart Attendance** é um sistema automatizado para o **controle de presença de estudantes**. Seu objetivo é substituir o processo manual de chamada geralmente demorado e sujeito a falhas por uma **solução rápida, confiável e moderna**.
 
