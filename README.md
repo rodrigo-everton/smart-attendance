@@ -45,11 +45,6 @@ O projeto é desenvolvido no **Centro Universitário de Brasília (UniCEUB)**, c
 - Plano de ação e cronograma  
 - Termos de parceria ou anuência  
 
-### Materiais Complementares
-- Fotografias e vídeos das atividades presenciais  
-- Certificados de participação  
-- Relatos de impacto na comunidade  
-
 ---
 
 ## 📈 Gestão e Acompanhamento
