@@ -1,37 +1,72 @@
-# Smart Attendance
-## 📌 O que a equipe está desenvolvendo?
+# 🧠 Smart Attendance
 
-- O Smart Attendance é um sistema automatizado para o controle de presença de estudantes. Seu objetivo é substituir o processo manual de chamada, geralmente demorado e sujeito a falhas por uma solução rápida, confiável e moderna. O sistema utiliza tecnologias de reconhecimento facial para identificar os alunos assim que entram na sala de aula, registrando a presença de forma automática e precisa.
+## 📌 Sobre o Projeto
+O **Smart Attendance** é um sistema automatizado para o **controle de presença de estudantes**. Seu objetivo é substituir o processo manual de chamada geralmente demorado e sujeito a falhas por uma **solução rápida, confiável e moderna**.
 
-## 🎯 Por que este projeto é importante?
+A aplicação utiliza **QR Code** para a realização da chamada dos alunos, registrando a presença de forma **precisa**.
 
-- O Smart Attendance traz benefícios diretos para a comunidade acadêmica:
+---
 
-⏱️ Agilidade: permite que as aulas comecem mais rápido, economizando tempo precioso.
+## 🎯 Importância do Projeto
+O **Smart Attendance** traz benefícios diretos para a comunidade acadêmica:
 
-✅ Confiabilidade: elimina inconsistências e reduz a possibilidade de fraudes.
+⏱️ **Agilidade:** aulas começam mais rápido, economizando tempo.  
+✅ **Confiabilidade:** elimina inconsistências e reduz fraudes.  
+📊 **Gestão inteligente:** relatórios em tempo real para docentes e coordenação.  
+🚨 **Indicadores de risco:** identifica alunos com alta taxa de ausência, auxiliando na prevenção de baixo desempenho.
 
-📊 Gestão inteligente: disponibiliza relatórios em tempo real para acompanhamento da frequência.
+---
 
-🚨 Indicadores de risco: facilita a identificação de estudantes com alta taxa de ausência, servindo como alerta para problemas de desempenho.
+## 👥 Equipe e Papéis
+- **Gerente de Projeto:** João Vitor Leonardi Nascimento  
+- **Desenvolvedor Líder:** Átila Alves Rodrigues  
+- **Desenvolvedores / Analistas de Teste:** Alex Hirth Bastos e Rodrigo Everton
 
-## 👥 Quem são os responsáveis e seus papéis?
+---
 
-Gerente de Projeto: João Vitor Leonardi Nascimento 
+## 🏫 Local de Desenvolvimento
+O projeto é desenvolvido no **Centro Universitário de Brasília (UniCEUB)**, como parte do **Projeto Integrador II** do curso de **Ciência da Computação**, sob orientação da **Professora Kadidja Valeria Reginaldo de Oliveira**.
 
-Desenvolvedor de Software / Analista de Testes: Alex Hirth Bastos e Rodrigo Everton
+---
 
-Desenvolvedor Líder: Átila Alves Rodrigues
+## 🛠️ Tecnologias Utilizadas
+- **Linguagens e Frameworks:** JavaScript, HTML, CSS, Node.js  
+- **Prototipagem e Design:** Figma, Canva  
+- **Ambientes de Desenvolvimento:** GitHub, VS Code  
+- **Gestão de Projetos:** Trello, Notion  
+- **Metodologia:** Scrum e Kanban
 
-## 🛠️ Onde será realizado e acompanhado o projeto?
+---
 
-O desenvolvimento será conduzido em um ambiente integrado de desenvolvimento (IDE), utilizando ferramentas de programação e colaboração online para a gestão do código.
+## 🧩 Estrutura do Projeto (Assets)
+### Artefatos Obrigatórios
+- Documento de requisitos (funcionais e não funcionais)  
+- Projeto de sistema (diagramas, fluxogramas e protótipos)  
+- Plano de ação e cronograma  
+- Termos de parceria ou anuência  
 
-## O progresso será acompanhado por:
+### Materiais Complementares
+- Fotografias e vídeos das atividades presenciais  
+- Certificados de participação  
+- Relatos de impacto na comunidade  
 
-📅 Reuniões de equipe regulares
+---
 
-💬 Plataformas de comunicação para alinhamento contínuo
+## 📈 Gestão e Acompanhamento
+- Reuniões regulares da equipe  
+- Plataformas de comunicação para alinhamento contínuo  
+- Testes em salas de aula piloto para validação da solução  
+- Painel administrativo para monitoramento de resultados em tempo real
 
-- A implementação ocorrerá inicialmente em salas de aula piloto, garantindo testes e validação da solução.
-- Além disso, a gestão será realizada por meio de um painel administrativo, permitindo visualizar o status e os resultados em tempo real.
+---
+
+## 🧩 Fundamentação e Demandas Institucionais
+O projeto está alinhado às diretrizes do **Repositório Institucional** do UniCEUB, apresentando:
+- Identificação de problema real no contexto acadêmico;  
+- Objetivos gerais e específicos bem definidos;  
+- Referências teóricas que sustentam o desenvolvimento;  
+- Impacto prático na comunidade educacional.
+
+---
+
+📍 **Brasília - DF | 2º semestre de 2025**
