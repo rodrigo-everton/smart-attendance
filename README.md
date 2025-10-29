@@ -57,3 +57,243 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+# 🚀 Smart-Attendance — Guia de Instalação
+
+Este projeto utiliza **Laravel 8** com **PHP 8.2**. Siga as etapas abaixo para configurar o ambiente e rodar a aplicação localmente.
+
+---
+
+## 🧩 Pré-requisitos
+
+* **PHP** (versão 8.2 ou compatível com Laravel 8): [https://php.net/downloads.php](https://php.net/downloads.php)
+* **Composer** (gerenciador de dependências PHP): [https://getcomposer.org](https://getcomposer.org/)
+* **Git** (opcional, mas recomendado): [https://git-scm.com](https://git-scm.com/)
+* **Postgres** (versão 17.6 será o banco de dados utilizado): [https://postgresql-downloads](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
+
+---
+
+## Configuração do PHP no Windows (Variáveis de Ambiente)
+
+Se você está no Windows e baixou o ZIP do PHP, siga estes passos para torná-lo acessível globalmente:
+
+1.  **Extraia o PHP:**
+    * Crie uma pasta no caminho raiz do seu disco: `C:\php`
+    * Extraia o conteúdo do arquivo ZIP do PHP para dentro desta nova pasta (`C:\php`).
+
+2.  **Adicionar ao PATH do Sistema:**
+    * Pesquise no Windows por **"Configurações avançadas do sistema"**.
+    * Na aba **Avançado**, clique em **"Variáveis de Ambiente"**.
+    * Na seção **"Variáveis do Sistema"**, encontre e selecione a variável **`Path`** e clique em **"Editar..."**.
+    * Clique em **"Novo"** e adicione o caminho:
+        ```
+        C:\php
+        ```
+    * Clique em **"OK"** em todas as janelas para salvar.
+
+---
+
+## Configuração Inicial do Git (Git Bash)
+
+ **Registrando o usuário (Faça isso apenas uma vez por máquina):**
+    ```bash
+    git config --global user.name "Seu Nome Aqui"
+    git config --global user.email "Seu Email Aqui"
+    ```
+
+---
+## 🛠️ Primeira Instalação do PHP (Configuração do `php.ini`)
+
+Após extrair o PHP para `C:\php`, você precisa garantir que a extensão `fileinfo` esteja habilitada no seu `php.ini`.
+
+ **Caso não saiba qual o arquivo `php.ini`**
+
+<img width="614" height="564" alt="image" src="https://github.com/user-attachments/assets/a39437e1-cef9-47ad-9b3f-51f1ce05873c" />
+
+Execute o comando abaixo no seu **Git Bash/Terminal** para **abrir o arquivo de configuração** no VS Code (assumindo que o VS Code está no PATH):
+
+   ```bash
+   code C:\php\php.ini
+   ```
+
+## 1. Abrir o Terminal
+
+* **Windows:**
+    * Navegue até a pasta raiz do projeto.
+    * Clique com o botão direito e selecione **"Git Bash Here"** ou **"Abrir no Terminal"**.
+    * Alternativamente, você pode usar **PowerShell** ou **Prompt de Comando** após configurar o PATH do PHP.
+
+Dentro do arquivo que abrir, localize e remova o ponto e vírgula (`;`) do início da linha para ativá-lo:
+
+**Mude de:**
+
+```ini
+;extension=fileinfo
+```
+**Para**
+```ini
+extension=fileinfo
+```
+
+**Mude de:**
+
+```ini
+;extension=zip
+```
+**Para**
+```ini
+extension=zip
+```
+
+**Mude de:**
+```ini
+;extension_dir = "ext"
+```
+**Para**
+```ini
+extension_dir = "C:\php\ext"
+```
+
+
+---
+
+## 2. Instalar o Instalador Global do Laravel (Única vez)
+Somente de installar o composer
+```bash
+composer global require laravel/installer
+```
+
+
+
+## 3. Criar um novo projeto Laravel
+
+### ✅ Usando o instalador Laravel:
+
+```bash
+laravel new nome-do-projeto
+```
+
+### ⚠️ Usando o Composer (caso não tenha o instalador):
+
+```bash
+composer create-project laravel/laravel --stability=stable --prefer-dist Nome do Seu Proeto
+```
+
+## 4. Acessar o diretório do projeto
+
+```bash
+cd nome-do-projeto/
+```
+
+
+
+## 5. Abrir o VS Code na pasta do projeto
+
+```bash
+code .
+```
+
+
+Ao abrir o VScode digite no terminal 
+
+```bash
+composer install
+```
+**Em seguida**
+
+```bash
+composer update
+```
+---
+*No Termenial Digite:* 
+```bash
+php artisan serve
+```
+### Caso tudo esteja certo esta sera a tela que deve aparecer: 
+<img width="1122" height="507" alt="image" src="https://github.com/user-attachments/assets/eb97908c-2810-4a30-9b6f-6010223a5a1f" />
+
+---
+
+
+---
+
+## ✅ Instalar Node.js + npm
+
+* Baixe a versão **LTS (Recommended for most users)** em: [https://nodejs.org/](https://nodejs.org/)
+* Após instalar, **feche e reabra o terminal** e teste com:
+
+```bash
+node -v
+npm -v
+```
+
+---
+
+## ✅ Instalar Laravel UI
+
+No terminal, dentro da pasta do seu projeto:
+
+```bash
+composer require laravel/ui
+```
+
+---
+
+## ✅ Gerar os arquivos do front-end com autenticação
+
+Escolha uma das opções abaixo:
+
+### 👉 Bootstrap + Auth
+
+```bash
+php artisan ui bootstrap --auth
+```
+
+### 👉 Vue + Auth
+
+```bash
+php artisan ui vue --auth
+```
+
+### 👉 React + Auth
+
+```bash
+php artisan ui react --auth
+```
+
+---
+
+## ✅ Instalar dependências front-end
+
+```bash
+npm install
+```
+
+---
+
+## ✅ Compilar os assets (CSS/JS)
+
+```bash
+npm run dev
+```
+
+> 💡 Use `npm run watch` para recompilar automaticamente ao salvar os arquivos.
+
+---
+
+## 🧪 Testando
+
+Acesse o projeto no navegador:
+
+```
+http://localhost:8000
+```
+
+Verifique se o front-end e a autenticação estão funcionando corretamente.
+
+---
+
+## 📄 Licença
+
+O framework Laravel é open-source e está sob a [licença MIT](https://opensource.org/licenses/MIT).
