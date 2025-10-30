@@ -97,10 +97,12 @@ Se você está no Windows e baixou o ZIP do PHP, siga estes passos para torná-l
 ## Configuração Inicial do Git (Git Bash)
 
  **Registrando o usuário (Faça isso apenas uma vez por máquina):**
-    ```bash
+    
+   
     git config --global user.name "Seu Nome Aqui"
+ 
     git config --global user.email "Seu Email Aqui"
-    ```
+    
 
 ---
 ## 🛠️ Primeira Instalação do PHP (Configuração do `php.ini`)
