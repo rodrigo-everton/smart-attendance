@@ -119,7 +119,7 @@ Execute o comando abaixo no seu **Git Bash/Terminal** para **abrir o arquivo de 
    code C:\php\php.ini
    ```
 
-## 1. Abrir o Terminal
+## 1. Abrir o Terminal ou abra o local da pasta e selecione o arquivo `php.ini` 
 
 * **Windows:**
     * Navegue até a pasta raiz do projeto.
@@ -164,22 +164,13 @@ composer global require laravel/installer
 ```
 
 
-
-## 3. Criar um novo projeto Laravel
-
-### ✅ Usando o instalador Laravel:
+### ⚠️ Usando o Composer (Criando o projeto):
 
 ```bash
-laravel new nome-do-projeto
+composer create-project laravel/laravel --stability=stable --prefer-dist nome-do-projeto
 ```
 
-### ⚠️ Usando o Composer (caso não tenha o instalador):
-
-```bash
-composer create-project laravel/laravel --stability=stable --prefer-dist Nome do Seu Proeto
-```
-
-## 4. Acessar o diretório do projeto
+## 3. Acessar o diretório do projeto
 
 ```bash
 cd nome-do-projeto/
@@ -187,7 +178,7 @@ cd nome-do-projeto/
 
 
 
-## 5. Abrir o VS Code na pasta do projeto
+## 4. Abrir o VS Code na pasta do projeto
 
 ```bash
 code .
@@ -213,19 +204,24 @@ php artisan serve
 <img width="1122" height="507" alt="image" src="https://github.com/user-attachments/assets/eb97908c-2810-4a30-9b6f-6010223a5a1f" />
 
 ---
-## Configurando o Banco de Dados
+## 5. Configurando o Banco de Dados
 
 *Depois de fazer a instalação do Postgres e Fazer a criação do Banco de Dados  `Smart-Attendance`*
 
 Dentro do arquivo `.env` Procure e faça as seguintes alterações no codigo:
 ```bash
 DB_CONNECTION=pgsql
-DB_HOST=127.0.0.1
+DB_HOST= Já estara preenchido
 DB_PORT=5432
 DB_DATABASE=Smart-Attendance
 DB_USERNAME=postgres
 DB_PASSWORD=Sua senha Aqui
 ```
+Em seguida digite o seguinte codigo no terminal
+```bash
+php artisan migrate
+```
+
 *Se tudo der certo a mensagem que deve aparecer sera esta:*
 
 <img width="775" height="206" alt="image" src="https://github.com/user-attachments/assets/927b1423-b453-4862-ae74-bad2d12e2762" />
