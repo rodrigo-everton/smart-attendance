@@ -126,27 +126,25 @@ Execute o comando abaixo no seu **Git Bash/Terminal** para **abrir o arquivo de 
 
 Dentro do arquivo que abrir, localize e remova o ponto e vírgula (`;`) do início da linha para ativá-lo:
 
-**Mude de:**
-
-```ini
-;extension=fileinfo
-```
-**Para**
+**Mude em:**
 ```ini
 extension=fileinfo
 ```
 
-**Mude de:**
-
-```ini
-;extension=zip
-```
-**Para**
 ```ini
 extension=zip
 ```
 
-**Mude de:**
+
+```ini
+extension=pdo_pgsql
+```
+
+```ini
+extension=pgsql
+```
+
+**Modifique de:**
 ```ini
 ;extension_dir = "ext"
 ```
@@ -154,7 +152,6 @@ extension=zip
 ```ini
 extension_dir = "C:\php\ext"
 ```
-
 
 ---
 
@@ -214,7 +211,22 @@ php artisan serve
 <img width="1122" height="507" alt="image" src="https://github.com/user-attachments/assets/eb97908c-2810-4a30-9b6f-6010223a5a1f" />
 
 ---
+## Configurando o Banco de Dados
 
+*Depois de fazer a instalação do Postgres e Fazer a criação do Banco de Dados  `Smart-Attendance`*
+
+Dentro do arquivo `.env` Procure e faça as seguintes alterações no codigo:
+```bash
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=Smart-Attendance
+DB_USERNAME=postgres
+DB_PASSWORD=Sua senha Aqui
+```
+*Se tudo der certo a mensagem que deve aparecer sera esta:*
+
+<img width="775" height="206" alt="image" src="https://github.com/user-attachments/assets/927b1423-b453-4862-ae74-bad2d12e2762" />
 
 ---
 
@@ -291,9 +303,3 @@ http://localhost:8000
 ```
 
 Verifique se o front-end e a autenticação estão funcionando corretamente.
-
----
-
-## 📄 Licença
-
-O framework Laravel é open-source e está sob a [licença MIT](https://opensource.org/licenses/MIT).
