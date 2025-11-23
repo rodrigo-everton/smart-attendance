@@ -5,159 +5,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Smart Attendance</title>
-
-    {{-- 💡 Estilos CSS (Adaptados do seu Home.module.css) --}}
+    <!-- Carrega o Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --color-primary: #1e3a8a;
-            /* Azul Escuro */
-            --color-secondary: #0c4a6e;
-            /* Azul Marinho (para hover) */
-            --color-accent: #f59e0b;
-            /* Amarelo/Laranja (para destaque) */
-            --color-light: #ffffff;
-        }
-
+        /* Define a fonte Inter como padrão */
         body {
-            margin: 0;
-            padding: 0;
-            font-family: sans-serif;
+            font-family: "Inter", sans-serif;
         }
 
-        .container {
-            background-color: var(--color-primary);
-            color: var(--color-light);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .card {
-            width: 320px;
-            background-color: var(--color-primary);
-            padding: 2rem;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .logo {
-            font-size: 3rem;
-            font-weight: 900;
-            letter-spacing: 2px;
-            margin-bottom: 1rem;
-        }
-
-        .hr {
-            width: 100%;
-            border: none;
-            border-top: 1px solid rgba(255, 255, 255, 0.4);
-        }
-
-        .title {
-            color: var(--color-accent);
-            margin-top: 1rem;
-            font-weight: 700;
-        }
-
-        .subtitle {
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .form {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            margin-top: 1.5rem;
-            gap: 0.8rem;
-        }
-
-        .input {
-            padding: 0.8rem;
-            border-radius: 20px;
-            border: none;
-            outline: none;
-            width: 100%;
-        }
-
-        .checkboxLabel {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-
-        .button {
-            margin-top: 0.5rem;
-            background-color: var(--color-accent);
-            border-radius: 20px;
-            padding: 0.8rem;
-            font-weight: bold;
-            color: var(--color-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            transition: 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-
-        .button:hover {
-            background-color: var(--color-secondary);
+        /* Aplica um gradiente de fundo sutil para dar profundidade */
+        .container-bg {
+            background: radial-gradient(circle at center, #1e3a8a 0%, #0c4a6e 100%);
         }
     </style>
+    <script>
+        // Configuração do Tailwind para usar as novas cores customizadas
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e3a8a', // Azul Escuro Principal (Fundo)
+                        card_purple: '#4c1d95', // Roxo mais forte para o Card
+                        button_accent: '#c026d3', // Roxo Rosado (Fúcsia) para o Botão e Título
+                        button_hover: '#86198f', // Fúcsia Escuro para o Hover
+                        light: '#ffffff', // Branco
+                    },
+                }
+            }
+        }
+    </script>
 </head>
 
-<body>
+<body class="bg-gray-100">
 
-    <div class="container">
-        <div class="card">
-            <h1 class="logo">CEUB</h1>
+    <!-- Container principal: min-height 100vh, centralizado e com fundo azul customizado -->
+    <div class="container-bg min-h-screen flex items-center justify-center p-4">
 
-            <hr class="hr" />
+        <!-- Cartão de Login: fundo roxo forte. Texto claro. -->
+        <div
+            class="w-full max-w-sm bg-card_purple p-8 rounded-xl shadow-2xl transition duration-500 
+                    hover:shadow-card_purple/70 transform hover:-translate-y-1 text-light">
 
-            <h2 class="title">Smart Attendance</h2>
-            <p class="subtitle">Registro Acadêmico</p>
+            <!-- Header do Cartão -->
+            <div class="text-center mb-6">
+                <!-- Logo: Cor clara (Branco) -->
+                <h1 class="text-4xl font-extrabold tracking-wider text-light mb-1">CEUB</h1>
+                <!-- Linha Divisória: Cor clara (Branco semi-transparente) -->
+                <hr class="w-full border-t border-light/50 my-4" />
+                <!-- Título: AGORA com a cor Roxo Rosado (button_accent) -->
+                <h2 class="text-2xl font-bold text-button_accent mt-4">Smart Attendance</h2>
+                <!-- Subtítulo: Cor clara (Branco) -->
+                <p class="text-light font-semibold mb-4">Registro Acadêmico</p>
+                <!-- Linha Divisória: Cor clara (Branco semi-transparente) -->
+                <hr class="w-full border-t border-light/50 my-4" />
+            </div>
 
-            <hr class="hr" />
-
-            {{-- FORMULÁRIO APONTA PARA A ROTA REAL DE LOGIN --}}
-            <form method="POST" action="{{ route('login') }}" class="form">
+            <!-- FORMULÁRIO APONTA PARA A ROTA REAL DE LOGIN -->
+            <form method="POST" action="{{ route('login') }}" class="flex flex-col space-y-4">
                 @csrf
 
                 {{-- Exibe erros de validação (se houver) --}}
                 @error('ra_email_cpf')
-                    <div style="color: yellow; font-weight: bold; text-align: center;">
+                    <div class="bg-red-600 text-light p-3 rounded-lg font-bold text-sm text-center">
                         {{ $message }}
                     </div>
                 @enderror
 
-
-                {{-- 1. CAMPO MATRÍCULA (ou RA/E-mail/CPF) --}}
-                <input type="text" name="ra_email_cpf" placeholder="Matrícula, RA ou E-Mail" class="input" required
-                    value="{{ old('ra_email_cpf') }}" />
+                {{-- 1. CAMPO MATRÍCULA (Inputs mantêm fundo branco e texto escuro para contraste) --}}
+                <input type="text" name="ra_email_cpf" placeholder="Matrícula, RA ou E-Mail"
+                    class="w-full p-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-button_accent transition duration-200 text-gray-800"
+                    required value="{{ old('ra_email_cpf') }}" />
 
                 {{-- 2. CAMPO SENHA --}}
-                <input type="password" name="password" placeholder="Senha" class="input" required />
+                <input type="password" name="password" placeholder="Senha"
+                    class="w-full p-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-button_accent transition duration-200 text-gray-800"
+                    required />
 
                 {{-- Campo Lembrar de Mim (Checkbox) --}}
-                <label class="checkboxLabel">
-                    <input type="checkbox" name="remember" />
-                    Lembrar de mim por 30 dias
+                <!-- Label: Cor do texto alterada para Branco (text-light). Hover para o roxo rosado do botão. -->
+                <label
+                    class="flex items-center space-x-2 text-light text-sm cursor-pointer hover:text-button_accent transition duration-200">
+                    <input type="checkbox" name="remember"
+                        class="form-checkbox text-button_accent rounded focus:ring-button_accent" />
+                    <span>Lembrar de mim por 30 dias</span>
                 </label>
 
                 {{-- 3. BOTÃO DE SUBMISSÃO --}}
-                <button type="submit" class="button">
+                <!-- Botão: Cor de fundo Roxo Rosado (button_accent) e Hover Roxo Rosado Escuro (button_hover) -->
+                <button type="submit"
+                    class="mt-6 w-full p-3 bg-button_accent text-white font-bold rounded-full flex items-center justify-center space-x-2 
+                           shadow-lg shadow-button_accent/50 hover:bg-button_hover transition duration-300 transform hover:scale-[1.01] 
+                           focus:outline-none focus:ring-4 focus:ring-button_accent/50">
                     <span role="img" aria-label="login">
                         🔐
                     </span>
-                    Acessar
+                    <span>Acessar</span>
                 </button>
             </form>
         </div>
