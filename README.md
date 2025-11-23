@@ -228,69 +228,12 @@ php artisan migrate
 
 ---
 
-## ✅ Instalar Node.js + npm
+# 💾Rodando Migrações e Seeds (Recomendado para Primeira Configuração)
 
-* Baixe a versão **LTS (Recommended for most users)** em: [https://nodejs.org/](https://nodejs.org/)
-* Após instalar, **feche e reabra o terminal** e teste com:
-
+Para limpar o banco de dados anterior, rodar as migrações e popular o banco de dados com dados de teste/iniciais (seeds), use o comando:
 ```bash
-node -v
-npm -v
+php artisan migrate:fresh --seed
 ```
-
----
-
-## ✅ Instalar Laravel UI
-
-No terminal, dentro da pasta do seu projeto:
-
-```bash
-composer require laravel/ui
-```
-
----
-
-## ✅ Gerar os arquivos do front-end com autenticação
-
-Escolha uma das opções abaixo:
-
-### 👉 Bootstrap + Auth
-
-```bash
-php artisan ui bootstrap --auth
-```
-
-### 👉 Vue + Auth
-
-```bash
-php artisan ui vue --auth
-```
-
-### 👉 React + Auth
-
-```bash
-php artisan ui react --auth
-```
-
----
-
-## ✅ Instalar dependências front-end
-
-```bash
-npm install
-```
-
----
-
-## ✅ Compilar os assets (CSS/JS)
-
-```bash
-npm run dev
-```
-
-> 💡 Use `npm run watch` para recompilar automaticamente ao salvar os arquivos.
-
----
 
 ## 🧪 Testando
 
