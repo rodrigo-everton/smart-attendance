@@ -1,0 +1,68 @@
+.container {
+  background-color: var(--color-primary);
+  color: var(--color-light);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  width: 320px;
+  padding: 2rem 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.step {
+  background-color: var(--color-accent);
+  color: var(--color-light);
+  padding: 1.2rem;
+  border-radius: 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+}
+
+.icon {
+  font-size: 2.5rem;
+}
+
+.qr {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  background: var(--color-light);
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.button {
+  margin-top: 0.5rem;
+  width: 100%;
+  background-color: var(--color-warning);
+  border: none;
+  border-radius: 20px;
+  padding: 0.8rem;
+  font-weight: bold;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.button:hover {
+  background-color: var(--color-secondary);
+  color: var(--color-light);
+}
