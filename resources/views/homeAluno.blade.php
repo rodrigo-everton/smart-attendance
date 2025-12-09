@@ -95,7 +95,7 @@
                 <img src="{{ asset('img/qr-code.png') }}" alt="QR Code Placeholder" class="w-20 h-20 mx-auto">
             </span>
             <p class="text-light text-base md:text-lg font-medium">O docente escaneia o QR Code que será gerado pelo
-                professor.</p>
+                professor.</p>a
         </div>
 
         <div class="bg-card_fuchsia p-6 rounded-xl shadow-lg flex flex-col items-center text-center">

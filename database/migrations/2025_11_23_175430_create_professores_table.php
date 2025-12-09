@@ -12,10 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('professores', function (Blueprint $table) {
-            $table->id(); // PK
+
+            $table->string('cpf')->primary(); // Define o CPF como a chave primária
             $table->string('nome');
             $table->string('email')->unique();
             $table->string('password'); // SENHA para login
+            $table->string('role')->default('professor');
+            $table->timestamp('email_verified_at')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
     }

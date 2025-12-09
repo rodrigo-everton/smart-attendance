@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Aluno;
+use App\Models\AlunoModel;
 use App\Models\User;
 
 return [
@@ -25,7 +26,7 @@ return [
         // NOVO PROVIDER PARA ALUNOS
         'alunos' => [
             'driver' => 'eloquent',
-            'model' => Aluno::class,
+            'model' => AlunoModel::class,
         ],
     ],
 

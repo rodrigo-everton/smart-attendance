@@ -2,18 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Auth\LoginController;
+// 🚨 CORREÇÃO: Usando o Router de Login como o Controller primário
+use App\Http\Controllers\LoginRouterController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Http\Request;
 
 // ----------------------------------------------------
 // 1. ROTAS DE AUTENTICAÇÃO (Acesso Público)
 // ----------------------------------------------------
 
-// Rota GET para exibir o formulário de login
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login_form');
-
-// Rota POST para processar a submissão do formulário
-Route::post('/login', [LoginController::class, 'authenticate'])->name('login');
+// O LoginRouterController agora cuida da exibição e do processamento do POST
+Route::get('/login', [LoginRouterController::class, 'showLoginForm'])->name('login_form');
+Route::post('/login', [LoginRouterController::class, 'authenticate'])->name('login');
 
 // Rota de Logout
 Route::post('/logout', function (Request $request) {
@@ -25,14 +25,32 @@ Route::post('/logout', function (Request $request) {
 
 
 // ----------------------------------------------------
-// 2. ROTAS PROTEGIDAS (Acesso Restrito)
+// 2. ROTAS PROTEGIDAS (Dashboards) - MIDDLEWARE DE PERMISSÃO
 // ----------------------------------------------------
 
 Route::middleware('auth')->group(function () {
 
-    // Rota do Dashboard - Retorna a view 'home.blade.php'
+    // Rota da Dashboard do Professor
+    Route::get('/dashboard/professor', [DashboardController::class, 'professorIndex'])
+        // Proteção: Apenas usuários com role 'professor'
+        ->middleware(\App\Http\Middleware\CheckRole::class . ':professor')
+        ->name('dashboard.professor');
+
+    // Rota da Dashboard do Aluno
+    Route::get('/dashboard/aluno', [DashboardController::class, 'alunoIndex'])
+        // Proteção: Apenas usuários com role 'aluno'
+        ->middleware(\App\Http\Middleware\CheckRole::class . ':aluno')
+        ->name('dashboard.aluno');
+
+    // Rota genérica '/dashboard' (Redirecionamento)
     Route::get('/dashboard', function () {
-        return view('home');
+        $user = Auth::user();
+        $role = $user->role ?? 'aluno';
+
+        if ($role === 'professor') {
+            return redirect()->route('dashboard.professor');
+        }
+        return redirect()->route('dashboard.aluno');
     })->name('dashboard');
 });
 
@@ -41,25 +59,9 @@ Route::middleware('auth')->group(function () {
 // 3. ROTA RAIZ (PONTO DE ENTRADA PRINCIPAL)
 // ----------------------------------------------------
 
-// Redireciona / para o dashboard se logado, ou para o login se não logado.
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('dashboard');
     }
     return redirect()->route('login_form');
-});
-
-
-// ----------------------------------------------------
-// 4. ROTAS DE TESTE DE REDIRECIONAMENTO (DESENVOLVIMENTO)
-// ----------------------------------------------------
-
-// Rota de Destino de Teste (Pode ser acessada via GET)
-Route::get('/home-teste', function () {
-    return view('home');
-})->name('home_teste');
-
-// Rota de Submissão de Teste: Recebe o POST do formulário e redireciona.
-Route::post('/teste-redirect', function (Request $request) {
-    return redirect()->route('home_teste');
-})->name('teste_redirect');
+})->name('home');
