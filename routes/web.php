@@ -1,58 +1,92 @@
 <?php
 
+use App\Http\Controllers\AlunoLoginController;
+use App\Http\Controllers\ProfessorLoginController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-// 🚨 CORREÇÃO: Usando o Router de Login como o Controller primário
+use Illuminate\Http\Request;
+
+// Usamos o Router para exibir o seletor, mas os especializados para o processamento.
 use App\Http\Controllers\LoginRouterController;
 use App\Http\Controllers\DashboardController;
-use Illuminate\Http\Request;
+
 
 // ----------------------------------------------------
 // 1. ROTAS DE AUTENTICAÇÃO (Acesso Público)
 // ----------------------------------------------------
 
-// O LoginRouterController agora cuida da exibição e do processamento do POST
+// Rota GET /login: Exibe a página de seleção de perfil (index.blade.php)
 Route::get('/login', [LoginRouterController::class, 'showLoginForm'])->name('login_form');
-Route::post('/login', [LoginRouterController::class, 'authenticate'])->name('login');
+
+// Rota POST /login: Alias para compatibilidade com views antigas
+Route::post('/login', function (Request $request) {
+    // Redireciona para a rota específica do tipo de usuário
+    // Se a view precisar de route('login'), ela será redirecionada para o aluno por padrão
+    return redirect()->route('login.aluno');
+})->name('login');
 
 // Rota de Logout
 Route::post('/logout', function (Request $request) {
-    Auth::logout();
+    // Logout de ambos os guards (caso um esteja autenticado)
+    if (Auth::guard('professores')->check()) {
+        Auth::guard('professores')->logout();
+    }
+    if (Auth::guard('alunos')->check()) {
+        Auth::guard('alunos')->logout();
+    }
+
+    // Invalida sessão e token
     $request->session()->invalidate();
     $request->session()->regenerateToken();
     return redirect()->route('login_form');
 })->name('logout');
 
 
+// 🚨 NOVO: ROTAS DE LOGIN ESPECIALIZADAS POR PERFIL (Resolve o RouteNotFoundException)
+
+// Rota GET para exibir o formulário do Aluno (nome exigido pelo index.blade.php)
+Route::get('/login/aluno', [AlunoLoginController::class, 'showLoginForm'])
+    ->name('login.aluno.form');
+
+// Rota POST para processar o login do Aluno
+Route::post('/login/aluno', [AlunoLoginController::class, 'attemptAuthentication'])
+    ->name('login.aluno');
+
+// Rota GET para exibir o formulário do Professor
+Route::get('/login/professor', [ProfessorLoginController::class, 'showLoginForm'])
+    ->name('login.professor.form');
+
+// Rota POST para processar o login do Professor
+Route::post('/login/professor', [ProfessorLoginController::class, 'attemptAuthentication'])
+    ->name('login.professor');
+
+
 // ----------------------------------------------------
 // 2. ROTAS PROTEGIDAS (Dashboards) - MIDDLEWARE DE PERMISSÃO
 // ----------------------------------------------------
 
-Route::middleware('auth')->group(function () {
+// Rotas protegidas: cada rota usa o guard apropriado
 
-    // Rota da Dashboard do Professor
-    Route::get('/dashboard/professor', [DashboardController::class, 'professorIndex'])
-        // Proteção: Apenas usuários com role 'professor'
-        ->middleware(\App\Http\Middleware\CheckRole::class . ':professor')
-        ->name('dashboard.professor');
+// Dashboard do Professor (autenticação via guard 'professores')
+Route::get('/dashboard/professor', [DashboardController::class, 'professorIndex'])
+    ->middleware('auth:professores', 'role:professor')
+    ->name('dashboard.professor');
 
-    // Rota da Dashboard do Aluno
-    Route::get('/dashboard/aluno', [DashboardController::class, 'alunoIndex'])
-        // Proteção: Apenas usuários com role 'aluno'
-        ->middleware(\App\Http\Middleware\CheckRole::class . ':aluno')
-        ->name('dashboard.aluno');
+// Dashboard do Aluno (autenticação via guard 'alunos')
+Route::get('/dashboard/aluno', [DashboardController::class, 'alunoIndex'])
+    ->middleware('auth:alunos', 'role:aluno')
+    ->name('dashboard.aluno');
 
-    // Rota genérica '/dashboard' (Redirecionamento)
-    Route::get('/dashboard', function () {
-        $user = Auth::user();
-        $role = $user->role ?? 'aluno';
-
-        if ($role === 'professor') {
-            return redirect()->route('dashboard.professor');
-        }
+// Rota genérica '/dashboard' (verifica ambos os guards)
+Route::get('/dashboard', function () {
+    if (Auth::guard('professores')->check()) {
+        return redirect()->route('dashboard.professor');
+    }
+    if (Auth::guard('alunos')->check()) {
         return redirect()->route('dashboard.aluno');
-    })->name('dashboard');
-});
+    }
+    return redirect()->route('login_form');
+})->name('dashboard');
 
 
 // ----------------------------------------------------
@@ -63,5 +97,6 @@ Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('dashboard');
     }
+    // Redireciona para a página de seleção de perfil
     return redirect()->route('login_form');
 })->name('home');

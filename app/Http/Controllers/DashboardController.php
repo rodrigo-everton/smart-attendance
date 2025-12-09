@@ -13,7 +13,7 @@ class DashboardController extends BaseController
      */
     public function professorIndex()
     {
-        $professor = Auth::user();
+        $professor = Auth::guard('professores')->user();
         return view('homeProfessor', compact('professor'));
     }
 
@@ -22,7 +22,7 @@ class DashboardController extends BaseController
      */
     public function alunoIndex()
     {
-        $aluno = Auth::user();
+        $aluno = Auth::guard('alunos')->user();
         return view('homeAluno', compact('aluno'));
     }
 }

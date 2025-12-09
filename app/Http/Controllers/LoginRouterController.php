@@ -3,15 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\AlunoModel;
-use App\Models\ProfessorModel;
 use App\Http\Controller as BaseController;
+// Importamos os controllers especializados
+use App\Http\Controllers\AlunoLoginController;
+use App\Http\Controllers\ProfessorLoginController;
 
 class LoginRouterController extends BaseController
 {
-    // Usamos esta classe para unificar a apresentação e a autenticação sequencial
-
     public function showLoginForm()
     {
         return view('index');
@@ -19,40 +17,44 @@ class LoginRouterController extends BaseController
 
     public function authenticate(Request $request)
     {
-        // 1. VALIDAÇÃO BÁSICA
+        // 1. VALIDAÇÃO
         $request->validate([
             'ra_email_cpf' => 'required|string',
             'password' => 'required|string',
+            'user_role' => 'required|in:aluno,professor', // Obtido do formulário
         ], [
-            'ra_email_cpf.required' => 'O campo é obrigatório.',
+            'ra_email_cpf.required' => 'O campo de acesso é obrigatório.',
             'password.required' => 'A senha é obrigatória.',
+            'user_role.required' => 'Selecione se você é Aluno ou Professor.',
         ]);
 
         $login = $request->input('ra_email_cpf');
         $password = $request->input('password');
         $remember = $request->has('remember');
+        $role = $request->input('user_role');
 
-        // 2. TENTATIVA DE AUTENTICAÇÃO SEQUENCIAL (Alunos -> Professores)
+        // 2. DELEGAÇÃO DA AUTENTICAÇÃO
+        $loginResult = false;
 
-        // Crie instâncias dos controladores especializados (sem usar a injeção de dependência via construtor)
-        $alunoController = new AlunoLoginController();
-        $professorController = new ProfessorLoginController();
-
-        // 🚨 Tenta autenticar como Aluno
-        $alunoResult = $alunoController->attemptAuthentication($request, $login, $password, $remember);
-        if ($alunoResult) {
-            return $alunoResult;
+        if ($role === 'aluno') {
+            $alunoController = new AlunoLoginController();
+            // Chama o método que processa o Request
+            $loginResult = $alunoController->attemptAuthentication($request);
+        } elseif ($role === 'professor') {
+            $professorController = new ProfessorLoginController();
+            // Chama o método que processa o Request
+            $loginResult = $professorController->attemptAuthentication($request);
         }
 
-        // 🚨 Se falhou, tenta autenticar como Professor
-        $professorResult = $professorController->attemptAuthentication($request, $login, $password, $remember);
-        if ($professorResult) {
-            return $professorResult;
+        // 3. VERIFICAÇÃO DO RESULTADO
+        if ($loginResult) {
+            // Retorna o redirect que veio do Controller especializado
+            return $loginResult;
         }
 
-        // 3. FALHA FINAL
+        // 4. FALHA FINAL
         return back()->withErrors([
-            'ra_email_cpf' => 'Credenciais de acesso fornecidas são inválidas.',
+            'ra_email_cpf' => 'Credenciais de acesso fornecidas são inválidas para o perfil de ' . $role . '.',
         ])->onlyInput('ra_email_cpf');
     }
 }

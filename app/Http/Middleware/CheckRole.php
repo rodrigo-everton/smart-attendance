@@ -17,13 +17,18 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        // 1. Verificar se o usuário está logado
-        if (!Auth::check()) {
-            // Se não estiver logado, redireciona para a página de login.
-            return redirect()->route('login_form');
+        // 1. Verificar se o usuário está logado em qualquer guard relevante
+        $user = null;
+        if (Auth::guard('professores')->check()) {
+            $user = Auth::guard('professores')->user();
+        } elseif (Auth::guard('alunos')->check()) {
+            $user = Auth::guard('alunos')->user();
         }
 
-        $user = Auth::user();
+        if (!$user) {
+            // Se não estiver logado em nenhum guard, redireciona para a página de login.
+            return redirect()->route('login_form');
+        }
 
         // 2. Verificar se a role do usuário corresponde à role esperada
         // NOTA: O campo 'role' deve existir nos seus Models (AlunoModel, ProfessorModel)

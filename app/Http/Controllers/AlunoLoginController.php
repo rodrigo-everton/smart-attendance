@@ -11,23 +11,27 @@ use App\Http\Controller as BaseController;
 class AlunoLoginController extends BaseController
 {
     /**
-     * Exibe o formulário de login (se for a rota GET).
+     * Exibe o formulário de login do aluno.
      */
     public function showLoginForm()
     {
-        return view('index');
+        return view('login_aluno');
     }
 
     /**
-     * Lida com a tentativa de autenticação do Aluno, sendo chamado pelo Router.
-     * * @param Request $request A requisição HTTP.
-     * @param string $login O valor do campo de login (RA/CPF/Email).
-     * @param string $password A senha fornecida.
-     * @param bool $remember Se o usuário quer ser lembrado.
-     * @return \Illuminate\Http\RedirectResponse|bool Retorna o redirect em caso de sucesso, ou false em caso de falha.
+     * Processa o login do aluno.
      */
-    public function attemptAuthentication(Request $request, string $login, string $password, bool $remember): \Illuminate\Http\RedirectResponse|bool
+    public function attemptAuthentication(Request $request)
     {
+        $request->validate([
+            'ra_email_cpf' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        $login = $request->input('ra_email_cpf');
+        $password = $request->input('password');
+        $remember = $request->has('remember');
+
         $searchFieldsAluno = ['ra', 'cpf', 'email'];
 
         // --- AUTENTICAÇÃO MANUAL COMO ALUNO ---
@@ -41,15 +45,18 @@ class AlunoLoginController extends BaseController
         }
 
         if ($aluno && Hash::check($password, $aluno->password)) {
-            // Sucesso na autenticação
-            Auth::login($aluno, $remember);
+            // Sucesso na autenticação (usa guard 'alunos')
+            Auth::guard('alunos')->login($aluno, $remember);
             $request->session()->regenerate();
 
-            // Retorna o objeto de redirecionamento para ser repassado pelo Router
+            // Retorna o redirect para o dashboard do aluno
             return redirect()->route('dashboard.aluno');
         }
 
         // Falhou na autenticação do Aluno
-        return false;
+        return redirect()->route('login.aluno.form')
+            ->withErrors([
+                'ra_email_cpf' => 'Credenciais de acesso fornecidas são inválidas.',
+            ])->withInput();
     }
 }
