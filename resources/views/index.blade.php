@@ -1,43 +1,13 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+@extends('layouts.main')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seleção de Perfil - Smart Attendance</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Define a fonte Inter como padrão */
-        body {
-            font-family: "Inter", sans-serif;
-        }
+@section('title', 'Seleção de Perfil - Smart Attendance')
 
-        /* Aplica um gradiente de fundo sutil para dar profundidade */
-        .container-bg {
-            background: radial-gradient(circle at center, #1e3a8a 0%, #0c4a6e 100%);
-        }
-    </style>
-    <script>
-        // Configuração do Tailwind (mantida)
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#1e3a8a', // Azul Escuro Principal (Fundo)
-                        card_purple: '#4c1d95', // Roxo mais forte para o Card
-                        button_accent: '#c026d3', // Roxo Rosado (Fúcsia) para o Botão e Título
-                        button_hover: '#86198f', // Fúcsia Escuro para o Hover
-                        light: '#ffffff', // Branco
-                    },
-                }
-            }
-        }
-    </script>
-</head>
+@section('body-class', 'gradient-bg relative')
 
-<body class="bg-gray-100">
+@section('footer-class', 'fixed bottom-4 w-full text-center text-sm text-white/60')
 
-    <div class="container-bg min-h-screen flex items-center justify-center p-4">
+@section('content')
+    <div class="flex-grow flex items-center justify-center p-4">
 
         <div
             class="w-full max-w-lg bg-card_purple p-8 rounded-xl shadow-2xl transition duration-500 
@@ -66,7 +36,7 @@
                 {{-- Card de PROFESSOR --}}
                 <a href="{{ route('login.professor.form') }}"
                     class="flex flex-col items-center justify-center p-6 bg-primary rounded-xl shadow-xl hover:bg-indigo-700 
-                           transition duration-300 transform hover:scale-[1.05] w-full md:w-1/2 cursor-pointer border-2 border-button_accent/0 hover:border-border-button_accent">
+                           transition duration-300 transform hover:scale-[1.05] w-full md:w-1/2 cursor-pointer border-2 border-button_accent/0 hover:border-button_accent">
 
                     <span class="text-6xl mb-3" role="img" aria-label="professor">👨‍🏫</span>
                     <h3 class="text-2xl font-bold text-light">PROFESSOR</h3>
@@ -74,12 +44,8 @@
                 </a>
             </div>
 
-            <p class="text-center text-xs text-gray-400 mt-8">Você será redirecionado para o formulário de login
-                específico.</p>
+            <p class="text-center text-xs text-gray-400 mt-8">Você será redirecionado para o formulário de login específico.</p>
 
         </div>
     </div>
-
-</body>
-
-</html>
+@endsection

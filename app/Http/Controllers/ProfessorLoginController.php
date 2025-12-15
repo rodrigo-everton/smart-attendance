@@ -16,7 +16,7 @@ class ProfessorLoginController extends BaseController
      */
     public function showLoginForm()
     {
-        return view('login_professor');
+        return view('professor.login');
     }
 
     /**
@@ -35,46 +35,26 @@ class ProfessorLoginController extends BaseController
 
         $searchFieldsProfessor = ['cpf', 'email'];
 
-        // --- AUTENTICAÇÃO MANUAL COMO PROFESSOR ---
-
         $professor = null;
-        // Tenta encontrar o Professor usando apenas CPF e E-mail
         foreach ($searchFieldsProfessor as $searchField) {
             $professor = ProfessorModel::where($searchField, $login)->first();
             if ($professor) break;
         }
 
-        \Log::info('Professor Login Attempt', [
-            'login_input' => $login,
-            'professor_found' => $professor ? $professor->email : 'not found',
-            'professor_role' => $professor ? $professor->role : 'N/A',
-        ]);
-
         if ($professor && Hash::check($password, $professor->password)) {
-            // Sucesso na autenticação
-            \Log::info('Professor Password Match - Logging in', [
-                'professor_id' => $professor->cpf,
-                'professor_email' => $professor->email,
-                'professor_role' => $professor->role,
-            ]);
-
-            // Usa guard específico para professores
             Auth::guard('professores')->login($professor, $remember);
             $request->session()->regenerate();
-
-            \Log::info('Professor Auth Check After Login', [
-                'auth_check' => Auth::check(),
-                'auth_user_role' => Auth::user()->role ?? 'null',
-            ]);
-
-            // Retorna o redirect para o dashboard
             return redirect()->route('dashboard.professor');
         }
 
-        \Log::info('Professor Login Failed', [
-            'professor_found' => $professor ? 'yes' : 'no',
-            'password_match' => $professor ? Hash::check($password, $professor->password) : 'n/a',
-        ]);
+        // Tentativa como Master
+        $master = \App\Models\UsuarioMaster::where('email', $login)->first();
+
+        if ($master && Hash::check($password, $master->password)) {
+            Auth::guard('masters')->login($master, $remember);
+            $request->session()->regenerate();
+            return redirect()->route('dashboard.master');
+        }
 
         // Falhou na autenticação do Professor
         return redirect()->route('login.professor.form')

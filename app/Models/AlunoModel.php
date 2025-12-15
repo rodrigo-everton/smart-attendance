@@ -46,4 +46,9 @@ class AlunoModel extends Authenticatable
         'password' => 'hashed',
         'email_verified_at' => 'datetime',
     ];
+
+    public function materias()
+    {
+        return $this->belongsToMany(Materia::class, 'aluno_materia', 'aluno_ra', 'materia_id');
+    }
 }

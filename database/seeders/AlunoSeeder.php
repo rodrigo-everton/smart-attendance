@@ -39,5 +39,26 @@ class AlunoSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        $alunosAdicionais = [
+            ['ra' => '300000000', 'cpf' => '11111111111', 'nome' => 'Lucas Silva', 'email' => 'lucas@aluno.com'],
+            ['ra' => '400000000', 'cpf' => '22222222222', 'nome' => 'Beatriz Costa', 'email' => 'beatriz@aluno.com'],
+            ['ra' => '500000000', 'cpf' => '33333333333', 'nome' => 'Gabriel Santos', 'email' => 'gabriel@aluno.com'],
+            ['ra' => '600000000', 'cpf' => '44444444444', 'nome' => 'Julia Souza', 'email' => 'julia@aluno.com'],
+            ['ra' => '700000000', 'cpf' => '55555555555', 'nome' => 'Rafael Lima', 'email' => 'rafael@aluno.com'],
+        ];
+
+        foreach ($alunosAdicionais as $aluno) {
+            DB::table('alunos')->insert([
+                'ra' => $aluno['ra'],
+                'cpf' => $aluno['cpf'],
+                'nome' => $aluno['nome'],
+                'email' => $aluno['email'],
+                'password' => Hash::make('aluno123'),
+                'role' => 'aluno',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 }

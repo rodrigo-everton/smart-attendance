@@ -60,4 +60,9 @@ class ProfessorModel extends Authenticatable
         'password' => 'hashed', // Garante que a senha seja hashed automaticamente
         'email_verified_at' => 'datetime',
     ];
+
+    public function materias()
+    {
+        return $this->belongsToMany(Materia::class, 'materia_professor', 'professor_cpf', 'materia_id');
+    }
 }

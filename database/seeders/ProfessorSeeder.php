@@ -35,5 +35,35 @@ class ProfessorSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        DB::table('professores')->insert([
+            'cpf' => '99988877766',
+            'nome' => 'Prof. Carlos',
+            'email' => 'carlos@teste.com',
+            'password' => Hash::make('professor123'),
+            'role' => 'professor',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('professores')->insert([
+            'cpf' => '11122233344',
+            'nome' => 'Profa. Ana',
+            'email' => 'ana@teste.com',
+            'password' => Hash::make('professor123'),
+            'role' => 'professor',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('professores')->insert([
+            'cpf' => '55544433322',
+            'nome' => 'Prof. Pedro',
+            'email' => 'pedro@teste.com',
+            'password' => Hash::make('professor123'),
+            'role' => 'professor',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }

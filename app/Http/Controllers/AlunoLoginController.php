@@ -15,7 +15,7 @@ class AlunoLoginController extends BaseController
      */
     public function showLoginForm()
     {
-        return view('login_aluno');
+        return view('aluno.login');
     }
 
     /**

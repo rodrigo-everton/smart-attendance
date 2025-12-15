@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 // Usamos o Router para exibir o seletor, mas os especializados para o processamento.
 use App\Http\Controllers\LoginRouterController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PdfTesteVulnerabilidadeController;
+use App\Http\Controllers\MasterSearchController;
+
 
 
 // ----------------------------------------------------
@@ -34,6 +37,9 @@ Route::post('/logout', function (Request $request) {
     if (Auth::guard('alunos')->check()) {
         Auth::guard('alunos')->logout();
     }
+    if (Auth::guard('masters')->check()) {
+        Auth::guard('masters')->logout();
+    }
 
     // Invalida sessão e token
     $request->session()->invalidate();
@@ -42,9 +48,11 @@ Route::post('/logout', function (Request $request) {
 })->name('logout');
 
 
-// 🚨 NOVO: ROTAS DE LOGIN ESPECIALIZADAS POR PERFIL (Resolve o RouteNotFoundException)
+// ----------------------------------------------------
+// ROTAS DE LOGIN ESPECIALIZADAS POR PERFIL
+// ----------------------------------------------------
 
-// Rota GET para exibir o formulário do Aluno (nome exigido pelo index.blade.php)
+// Rota GET para exibir o formulário do Aluno
 Route::get('/login/aluno', [AlunoLoginController::class, 'showLoginForm'])
     ->name('login.aluno.form');
 
@@ -60,9 +68,8 @@ Route::get('/login/professor', [ProfessorLoginController::class, 'showLoginForm'
 Route::post('/login/professor', [ProfessorLoginController::class, 'attemptAuthentication'])
     ->name('login.professor');
 
-
 // ----------------------------------------------------
-// 2. ROTAS PROTEGIDAS (Dashboards) - MIDDLEWARE DE PERMISSÃO
+// 2. ROTAS PROTEGIDAS (Dashboards & Recursos) - MIDDLEWARE DE PERMISSÃO
 // ----------------------------------------------------
 
 // Rotas protegidas: cada rota usa o guard apropriado
@@ -77,26 +84,32 @@ Route::get('/dashboard/aluno', [DashboardController::class, 'alunoIndex'])
     ->middleware('auth:alunos', 'role:aluno')
     ->name('dashboard.aluno');
 
-// Rota genérica '/dashboard' (verifica ambos os guards)
-Route::get('/dashboard', function () {
-    if (Auth::guard('professores')->check()) {
-        return redirect()->route('dashboard.professor');
-    }
-    if (Auth::guard('alunos')->check()) {
-        return redirect()->route('dashboard.aluno');
-    }
-    return redirect()->route('login_form');
-})->name('dashboard');
+// Dashboard do Master (autenticação via guard 'masters')
+Route::get('/dashboard/master', [DashboardController::class, 'masterIndex'])
+    ->middleware('auth:masters') // Pode adicionar 'role:master' se criar middleware
+    ->name('dashboard.master');
 
+// --- Rotas Protegidas para Todos (Professores, Alunos e Masters) ---
+Route::middleware(['auth:professores,alunos,masters'])->group(function () {
+    
+    // Rota genérica '/dashboard' (verifica todos os guards)
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    // Rota raiz (redireciona para dashboard)
+    Route::get('/', [DashboardController::class, 'index'])->name('home');
+
+    // Rota para PDF de Teste de Vulnerabilidade
+    Route::get('/pdf-teste-vulnerabilidade', [PdfTesteVulnerabilidadeController::class, 'index'])->name('pdf.teste.vulnerabilidade');
+
+});
 
 // ----------------------------------------------------
-// 3. ROTA RAIZ (PONTO DE ENTRADA PRINCIPAL)
+// 3. ROTAS DE PESQUISA (AJAX) - EXCLUSIVO MASTER
 // ----------------------------------------------------
+Route::middleware(['auth:masters'])->prefix('master/search')->group(function () {
+    Route::get('/professores', [MasterSearchController::class, 'searchProfessores'])->name('master.search.professores');
+    Route::get('/alunos', [MasterSearchController::class, 'searchAlunos'])->name('master.search.alunos');
+    Route::get('/materias', [MasterSearchController::class, 'searchMaterias'])->name('master.search.materias');
+});
 
-Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect()->route('dashboard');
-    }
-    // Redireciona para a página de seleção de perfil
-    return redirect()->route('login_form');
-})->name('home');
+

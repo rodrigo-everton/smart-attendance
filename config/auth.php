@@ -29,6 +29,10 @@ return [
             'driver' => 'session',
             'provider' => 'professores',
         ],
+        'masters' => [
+            'driver' => 'session',
+            'provider' => 'masters',
+        ],
     ],
 
     'providers' => [
@@ -42,6 +46,11 @@ return [
         'professores' => [
             'driver' => 'eloquent',
             'model' => App\Models\ProfessorModel::class, // Usa o Model do Professor
+        ],
+
+        'masters' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\UsuarioMaster::class,
         ],
     ],
 
@@ -59,6 +68,13 @@ return [
         // 🚨 NOVO PASSWORD CONFIG para Professores
         'professores' => [
             'provider' => 'professores',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'masters' => [
+            'provider' => 'masters',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,
