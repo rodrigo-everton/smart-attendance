@@ -2,114 +2,108 @@
 
 use App\Http\Controllers\AlunoLoginController;
 use App\Http\Controllers\ProfessorLoginController;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-
-// Usamos o Router para exibir o seletor, mas os especializados para o processamento.
 use App\Http\Controllers\LoginRouterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PdfTesteVulnerabilidadeController;
 use App\Http\Controllers\MasterSearchController;
+use App\Http\Controllers\PresencaController;
+use App\Http\Controllers\GerenciarMateriaController;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
-
-
-// ----------------------------------------------------
-// 1. ROTAS DE AUTENTICAÇÃO (Acesso Público)
-// ----------------------------------------------------
-
-// Rota GET /login: Exibe a página de seleção de perfil (index.blade.php)
-Route::get('/login', [LoginRouterController::class, 'showLoginForm'])->name('login_form');
-
-// Rota POST /login: Alias para compatibilidade com views antigas
-Route::post('/login', function (Request $request) {
-    // Redireciona para a rota específica do tipo de usuário
-    // Se a view precisar de route('login'), ela será redirecionada para o aluno por padrão
-    return redirect()->route('login.aluno');
-})->name('login');
-
-// Rota de Logout
 Route::post('/logout', function (Request $request) {
-    // Logout de ambos os guards (caso um esteja autenticado)
-    if (Auth::guard('professores')->check()) {
-        Auth::guard('professores')->logout();
-    }
-    if (Auth::guard('alunos')->check()) {
-        Auth::guard('alunos')->logout();
-    }
-    if (Auth::guard('masters')->check()) {
-        Auth::guard('masters')->logout();
-    }
+    Auth::guard('professores')->logout();
+    Auth::guard('alunos')->logout();
+    Auth::guard('masters')->logout();
 
-    // Invalida sessão e token
     $request->session()->invalidate();
     $request->session()->regenerateToken();
     return redirect()->route('login_form');
 })->name('logout');
 
+Route::post('/force-logout-beacon', function (Request $request) {
+    Auth::guard('professores')->logout();
+    Auth::guard('alunos')->logout();
+    Auth::guard('masters')->logout();
 
-// ----------------------------------------------------
-// ROTAS DE LOGIN ESPECIALIZADAS POR PERFIL
-// ----------------------------------------------------
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
 
-// Rota GET para exibir o formulário do Aluno
-Route::get('/login/aluno', [AlunoLoginController::class, 'showLoginForm'])
-    ->name('login.aluno.form');
+    return response()->noContent();
+});
 
-// Rota POST para processar o login do Aluno
+Route::post('/force-logout', function (Request $request) {
+    Auth::guard('professores')->logout();
+    Auth::guard('alunos')->logout();
+    Auth::guard('masters')->logout();
+
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect()->route('login_form')->with('status', 'Sessão forçada a expirar.');
+});
+
+Route::get('/', function () { return redirect()->route('login_form'); });
+Route::get('/login', [LoginRouterController::class, 'showLoginForm'])->name('login_form');
+
+Route::get('/login/aluno', [AlunoLoginController::class, 'showLoginForm'])->name('login.aluno.form');
 Route::post('/login/aluno', [AlunoLoginController::class, 'attemptAuthentication'])
+    ->middleware('throttle:10,3')
     ->name('login.aluno');
 
-// Rota GET para exibir o formulário do Professor
-Route::get('/login/professor', [ProfessorLoginController::class, 'showLoginForm'])
-    ->name('login.professor.form');
-
-// Rota POST para processar o login do Professor
+Route::get('/login/professor', [ProfessorLoginController::class, 'showLoginForm'])->name('login.professor.form');
 Route::post('/login/professor', [ProfessorLoginController::class, 'attemptAuthentication'])
+    ->middleware('throttle:10,3')
     ->name('login.professor');
 
-// ----------------------------------------------------
-// 2. ROTAS PROTEGIDAS (Dashboards & Recursos) - MIDDLEWARE DE PERMISSÃO
-// ----------------------------------------------------
+Route::post('/login', function (Request $request) {
+    return redirect()->route('login.aluno');
+})->name('login');
 
-// Rotas protegidas: cada rota usa o guard apropriado
+Route::get('/presenca/confirmar/{codigo_aula}', [PresencaController::class, 'confirmarPresenca'])
+    ->name('presenca.confirmar');
 
-// Dashboard do Professor (autenticação via guard 'professores')
-Route::get('/dashboard/professor', [DashboardController::class, 'professorIndex'])
-    ->middleware('auth:professores', 'role:professor')
-    ->name('dashboard.professor');
-
-// Dashboard do Aluno (autenticação via guard 'alunos')
-Route::get('/dashboard/aluno', [DashboardController::class, 'alunoIndex'])
-    ->middleware('auth:alunos', 'role:aluno')
-    ->name('dashboard.aluno');
-
-// Dashboard do Master (autenticação via guard 'masters')
-Route::get('/dashboard/master', [DashboardController::class, 'masterIndex'])
-    ->middleware('auth:masters') // Pode adicionar 'role:master' se criar middleware
-    ->name('dashboard.master');
-
-// --- Rotas Protegidas para Todos (Professores, Alunos e Masters) ---
 Route::middleware(['auth:professores,alunos,masters'])->group(function () {
-    
-    // Rota genérica '/dashboard' (verifica todos os guards)
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
-    // Rota raiz (redireciona para dashboard)
-    Route::get('/', [DashboardController::class, 'index'])->name('home');
 
-    // Rota para PDF de Teste de Vulnerabilidade
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/home', [DashboardController::class, 'index'])->name('home');
     Route::get('/pdf-teste-vulnerabilidade', [PdfTesteVulnerabilidadeController::class, 'index'])->name('pdf.teste.vulnerabilidade');
 
+    Route::middleware(['auth:alunos', 'role:aluno'])->group(function () {
+        Route::get('/dashboard/aluno', [DashboardController::class, 'alunoIndex'])->name('dashboard.aluno');
+    });
+
+    Route::middleware(['auth:professores', 'role:professor'])->prefix('professor')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'professorIndex'])->name('dashboard.professor');
+
+        Route::prefix('presenca')->group(function () {
+            Route::get('/', [PresencaController::class, 'index'])->name('professor.presenca.index');
+            Route::get('/gerar/{materia_id}', [PresencaController::class, 'gerarQr'])->name('professor.presenca.gerar');
+            Route::get('/check/{codigo_aula}', [PresencaController::class, 'getPresencas'])->name('professor.presenca.check');
+        });
+
+        Route::prefix('gerenciar')->group(function () {
+            Route::get('/', [GerenciarMateriaController::class, 'index'])->name('professor.gerenciar.index');
+            Route::get('/{materia_id}', [GerenciarMateriaController::class, 'show'])->name('professor.gerenciar.materia');
+            Route::post('/{materia_id}/notas', [GerenciarMateriaController::class, 'salvarNotas'])->name('professor.gerenciar.salvar_notas');
+        });
+    });
+
+    Route::middleware(['auth:masters'])->prefix('dashboard/master')->group(function () {
+        
+        Route::get('/', [DashboardController::class, 'masterIndex'])->name('dashboard.master');
+
+        Route::get('/professores', [DashboardController::class, 'masterProfessores'])->name('master.professores');
+        Route::get('/alunos', [DashboardController::class, 'masterAlunos'])->name('master.alunos');
+        Route::get('/materias', [DashboardController::class, 'masterMaterias'])->name('master.materias');
+        Route::get('/presenca', [DashboardController::class, 'masterPresenca'])->name('master.presenca');
+
+        Route::prefix('search')->group(function () {
+            Route::get('/professores', [MasterSearchController::class, 'searchProfessores'])->name('master.search.professores');
+            Route::get('/alunos', [MasterSearchController::class, 'searchAlunos'])->name('master.search.alunos');
+            Route::get('/materias', [MasterSearchController::class, 'searchMaterias'])->name('master.search.materias');
+        });
+    });
+
 });
-
-// ----------------------------------------------------
-// 3. ROTAS DE PESQUISA (AJAX) - EXCLUSIVO MASTER
-// ----------------------------------------------------
-Route::middleware(['auth:masters'])->prefix('master/search')->group(function () {
-    Route::get('/professores', [MasterSearchController::class, 'searchProfessores'])->name('master.search.professores');
-    Route::get('/alunos', [MasterSearchController::class, 'searchAlunos'])->name('master.search.alunos');
-    Route::get('/materias', [MasterSearchController::class, 'searchMaterias'])->name('master.search.materias');
-});
-
-

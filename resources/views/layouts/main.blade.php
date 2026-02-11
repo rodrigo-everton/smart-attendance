@@ -27,9 +27,8 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #555; 
         }
-
-        @stack('styles')
     </style>
+    @stack('styles')
     <script>
         tailwind.config = {
             theme: {
@@ -38,15 +37,19 @@
                         primary: '#a855f7', 
                         secondary: '#7e22ce',
                         accent: '#ffffff',
-                        card_purple: '#820ad1', /* Kept darker/richer to stand out against lighter bg */
+                        card_purple: '#820ad1',
                         button_accent: '#ffffff', 
                         button_hover: '#f0f0f0',
                         light: '#ffffff',
+                        dark_purple: '#4c1d95',
+                        prof_accent: '#c026d3',
                     },
                 }
             }
         }
     </script>
+    @stack('head-scripts')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body class="@yield('body-class', 'bg-gray-100') text-gray-800 antialiased min-h-screen flex flex-col">
 
@@ -55,8 +58,20 @@
     </div>
 
     <footer class="@yield('footer-class', 'py-6 text-center text-sm text-gray-500')">
-        &copy; 2025 Smart Attendance. Todos os direitos reservados.
+        <div class="flex flex-col items-center justify-center">
+            <span>&copy; {{ date('Y') }} Smart Attendance. Todos os direitos reservados.</span>
+            <span class="hidden print:block text-xs mt-1 text-gray-400">
+                Gerado em {{ now()->format('d/m/Y H:i:s') }} 
+                @if(Auth::guard('masters')->check()) por {{ Auth::guard('masters')->user()->nome }}
+                @elseif(Auth::guard('professores')->check()) por {{ Auth::guard('professores')->user()->nome }}
+                @elseif(Auth::guard('alunos')->check()) por {{ Auth::guard('alunos')->user()->nome }}
+                @endif
+            </span>
+        </div>
     </footer>
+
+    {{-- Script de auto-logout ao fechar aba --}}
+    @include('partials.auto_logout')
 
     @stack('scripts')
 </body>

@@ -49,6 +49,8 @@ class AlunoModel extends Authenticatable
 
     public function materias()
     {
-        return $this->belongsToMany(Materia::class, 'aluno_materia', 'aluno_ra', 'materia_id');
+        return $this->belongsToMany(Materia::class, 'aluno_materia', 'aluno_ra', 'materia_id')
+            ->withPivot('prova1', 'trabalho1', 'trabalho2', 'prova2', 'id')
+            ->withTimestamps();
     }
 }

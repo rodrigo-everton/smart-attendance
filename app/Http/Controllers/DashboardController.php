@@ -3,77 +3,99 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controller as BaseController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\ProfessorModel;
+use App\Models\AlunoModel;
+use App\Models\Materia;
+use App\Models\Presenca;
+use Illuminate\Http\Request;
 
 class DashboardController extends BaseController
 {
-    /**
-     * Exibe a dashboard do Professor.
-     */
     public function professorIndex()
     {
         $professor = Auth::guard('professores')->user();
         return view('professor.home', compact('professor'));
     }
 
-    /**
-     * Exibe a dashboard do Aluno.
-     */
     public function alunoIndex()
     {
         $aluno = Auth::guard('alunos')->user();
         return view('aluno.home', compact('aluno'));
     }
 
-    /**
-     * Exibe a dashboard do Master (Admin).
-     */
     public function masterIndex()
     {
         $master = Auth::guard('masters')->user();
-        
-        $professoresCount = \App\Models\ProfessorModel::count();
-        $alunosCount = \App\Models\AlunoModel::count();
-        $materiasCount = \App\Models\Materia::count();
 
-        $professores = \App\Models\ProfessorModel::with('materias')
-            ->withCount('materias') // Calculate materias_count
-            ->orderByDesc('materias_count')
-            ->limit(5)
-            ->get();
-            
-        $alunos = \App\Models\AlunoModel::with('materias')
-             ->withCount('materias') 
-             ->limit(5)->get();
-             
-        $materias = \App\Models\Materia::with(['professores', 'alunos'])
-            ->withCount(['professores', 'alunos'])
-            ->orderByDesc('alunos_count')
-            ->limit(5)
-            ->get();
+        $professoresCount = ProfessorModel::count();
+        $alunosCount = AlunoModel::count();
+        $materiasCount = Materia::count();
 
-        return view('master.home', compact('master', 
-            'professores', 'professoresCount', 
-            'alunos', 'alunosCount', 
-            'materias', 'materiasCount'
+        return view('master.home', compact(
+            'master', 'professoresCount', 'alunosCount', 'materiasCount'
         ));
     }
-    /**
-     * Redireciona para o dashboard correto com base no usuário logado.
-     */
+
+    public function masterProfessores()
+    {
+        $professores = ProfessorModel::with('materias')->withCount('materias')->orderBy('nome')->paginate(10);
+        return view('master.professores', compact('professores'));
+    }
+
+    public function masterAlunos()
+    {
+        $alunos = AlunoModel::with('materias')->withCount('materias')->orderBy('nome')->paginate(10);
+        return view('master.alunos', compact('alunos'));
+    }
+
+    public function masterMaterias()
+    {
+        $materias = Materia::with('professores')->withCount(['professores', 'alunos'])->orderBy('nome')->paginate(10);
+        return view('master.materias', compact('materias'));
+    }
+
+    public function masterPresenca(Request $request)
+    {
+        $query = Presenca::with(['aluno', 'aluno.materias', 'materia', 'professor']);
+
+        if ($request->filled('professor')) {
+            $query->whereHas('professor', function ($q) use ($request) {
+                $q->where('nome', 'like', '%' . $request->professor . '%');
+            });
+        }
+
+        if ($request->filled('materia')) {
+            $query->whereHas('materia', function ($q) use ($request) {
+                $q->where('nome', 'like', '%' . $request->materia . '%');
+            });
+        }
+
+        if ($request->filled('aluno')) {
+            $query->whereHas('aluno', function ($q) use ($request) {
+                $q->where('nome', 'like', '%' . $request->aluno . '%');
+            });
+        }
+
+        $presencas = $query->orderBy('created_at', 'desc')->paginate(20);
+
+        return view('master.presenca', compact('presencas'));
+    }
+
     public function index()
     {
         if (Auth::guard('professores')->check()) {
             return redirect()->route('dashboard.professor');
         }
+
         if (Auth::guard('masters')->check()) {
             return redirect()->route('dashboard.master');
         }
+
         if (Auth::guard('alunos')->check()) {
             return redirect()->route('dashboard.aluno');
         }
-        // Se cair aqui, apesar do middleware, aborta.
-        abort(403, 'Acesso não autorizado ou perfil desconhecido.');
+
+        return redirect()->route('login_form');
     }
 }

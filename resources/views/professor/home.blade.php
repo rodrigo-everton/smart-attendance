@@ -1,43 +1,23 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+@extends('layouts.main')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard do Professor - Smart Attendance</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: "Inter", sans-serif;
-            background-color: #f3f4f6;
-            /* Fundo cinza claro */
-        }
+@section('title', 'Dashboard do Professor - Smart Attendance')
 
-        .header-bg {
-            background: linear-gradient(135deg, #4c1d95, #c026d3);
-            /* Roxo Escuro para Roxo Rosado */
-        }
+@section('body-class', 'bg-gray-100 text-gray-800')
 
-        .card-shadow {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
-        }
-    </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        dark_purple: '#4c1d95',
-                        button_accent: '#c026d3',
-                    },
-                }
-            }
-        }
-    </script>
-</head>
+@push('styles')
+<style>
+    .header-bg {
+        background: linear-gradient(135deg, #4c1d95, #c026d3);
+    }
+    .card-shadow {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+    }
+</style>
+@endpush
 
-<body class="min-h-screen">
 
+
+@section('content')
     <header class="header-bg text-white p-4 shadow-lg">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <h1 class="text-2xl font-bold">Smart Attendance - Professor</h1>
@@ -66,13 +46,13 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-            <div class="bg-white p-6 rounded-lg card-shadow border-t-4 border-button_accent">
+            <div class="bg-white p-6 rounded-lg card-shadow border-t-4 border-prof_accent">
                 <h3 class="text-xl font-bold text-gray-700 mb-4">Gerar QR Code</h3>
                 <p class="text-gray-600 mb-4">Crie um novo código de presença para a sua aula atual.</p>
 
-                {{-- Ação fictícia, ajuste a rota conforme a sua função de geração --}}
-                <a href="#"
-                    class="inline-block bg-button_accent text-white py-2 px-4 rounded-lg font-semibold hover:bg-dark_purple transition duration-200">
+                {{-- Ação para gerar QR Code --}}
+                <a href="{{ route('professor.presenca.index') }}"
+                    class="inline-block bg-prof_accent text-white py-2 px-4 rounded-lg font-semibold hover:bg-dark_purple transition duration-200">
                     Gerar Código Agora
                 </a>
             </div>
@@ -89,7 +69,7 @@
             <div class="bg-white p-6 rounded-lg card-shadow border-t-4 border-gray-400">
                 <h3 class="text-xl font-bold text-gray-700 mb-4">Minhas Matérias</h3>
                 <p class="text-gray-600 mb-4">Configure turmas e disciplinas que você leciona.</p>
-                <a href="#"
+                <a href="{{ route('professor.gerenciar.index') }}"
                     class="inline-block border border-gray-400 text-gray-700 py-2 px-4 rounded-lg font-semibold hover:bg-gray-100 transition duration-200">
                     Gerenciar
                 </a>
@@ -111,7 +91,4 @@
         </section>
 
     </main>
-
-</body>
-
-</html>
+@endsection

@@ -27,14 +27,13 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            //\App\Http\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            // \App\Http\Middleware\VerifyCsrfToken::class,
+            \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
-        // O grupo 'api' pode ser mantido vazio ou adicionado, dependendo da sua necessidade
         'api' => [
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],

@@ -9,6 +9,19 @@
 @section('content')
     <div class="flex flex-col items-center p-4 w-full">
 
+        @if(session('pending_attendance_code'))
+            <div class="w-full max-w-md mb-6 bg-green-500/90 backdrop-blur-md border border-green-300 p-6 rounded-xl shadow-2xl text-center animate-pulse">
+                <span class="text-4xl mb-3 block">📋</span>
+                <h2 class="text-2xl font-bold text-white mb-2">Presença Pendente!</h2>
+                <p class="text-white/90 mb-4">Clique abaixo para confirmar sua presença na aula.</p>
+                <a href="{{ route('presenca.confirmar', session('pending_attendance_code')) }}"
+                    class="block w-full bg-white text-green-700 font-bold text-lg py-3 px-6 rounded-full 
+                           shadow-lg hover:bg-green-50 transition duration-300 transform hover:scale-[1.02]">
+                    ✅ Confirmar Presença Agora
+                </a>
+            </div>
+        @endif
+
         <h1 class="text-3xl md:text-4xl font-bold text-light mt-8 mb-6">Como funciona?</h1>
 
         <a href="{{ Auth::check() ? route('dashboard') : route('login_form') }}"

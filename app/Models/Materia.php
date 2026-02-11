@@ -13,11 +13,14 @@ class Materia extends Model
         'horario_noturno',
         'sala',
         'carga_horaria',
+        'total_aulas',
     ];
 
     public function alunos()
     {
-        return $this->belongsToMany(AlunoModel::class, 'aluno_materia', 'materia_id', 'aluno_ra');
+        return $this->belongsToMany(AlunoModel::class, 'aluno_materia', 'materia_id', 'aluno_ra')
+            ->withPivot('prova1', 'trabalho1', 'trabalho2', 'prova2', 'id')
+            ->withTimestamps();
     }
 
     public function professores()
