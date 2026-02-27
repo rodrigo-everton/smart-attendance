@@ -33,7 +33,7 @@ O projeto é desenvolvido no **Centro Universitário de Brasília (UniCEUB)**, c
 ---
 
 ## 🛠️ Tecnologias Utilizadas
-- **Linguagens e Frameworks:** JavaScript, HTML, CSS, Node.js  
+- **Linguagens e Frameworks:** PHP, HTML, CSS
 - **Prototipagem e Design:** Figma, Canva  
 - **Ambientes de Desenvolvimento:** GitHub, VS Code  
 - **Gestão de Projetos:** Trello, Notion  
@@ -66,5 +66,3 @@ O projeto está alinhado às diretrizes do **Repositório Institucional** do Uni
 - Impacto prático na comunidade educacional.
 
 ---
-
-📍 **Brasília - DF | 2º semestre de 2025**
